@@ -409,4 +409,9 @@ export interface StorageRepo {
 
 ## 8. Accepted Deviations Log
 
-*(Empty — architecture not yet implemented. Per `/architect`, any accepted deviation during implementation will be recorded here with rationale and approver.)*
+| Date | Area | Deviation | Rationale | Accepted By |
+| --- | --- | --- | --- | --- |
+| 2026-11-19 | `src/infra/uciParser.ts` | Extracted UCI parsing from `stockfishEngine.ts` into its own pure module. | Lets `tests/infra/uciParser.test.ts` test White/Black score normalization and `bestmove` parsing directly with zero Worker mocking. | Lead architect |
+| 2026-11-19 | `src/app/gameStore.ts` | Exported focused hooks (`useGameState`, `useLiveClockMs`, `useSavedGameSummary`) instead of a single `useGameStore` hook, plus `pauseAndPersist()`. | Prevents 100ms clock ticks from re-rendering components that do not display clocks, and flushes active clocks cleanly when returning to the Menu. | Lead architect |
+| 2026-11-19 | `src/infra/clockTicker.ts` | Flushes snapshots on `visibilitychange` and `pagehide` instead of `beforeunload`. | `pagehide` and `visibilitychange` fire reliably across modern desktop and mobile browsers without disabling bfcache. | Lead architect |
+| 2026-11-19 | `src/domain/gameReducer.ts` | Allowed `source: 'ai'` moves to commit while the human scrubs an earlier ply (`viewPly < moves.length`), preserving `viewPly`. | Prevents dropping Stockfish's reply and leaving `aiThinking` stuck `true` when the player reviews earlier moves while Stockfish thinks. | Lead architect |
