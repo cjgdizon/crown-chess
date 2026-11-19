@@ -1,6 +1,7 @@
 node_modules/
 dist/
 .vercel/
+.env*
 todo.md
 .audit/
 *.local
